@@ -2,6 +2,13 @@
 	Sessions were implemented by creating a new "Session" entity
 		With both a data model (a sub-class of ndb.model)
 		And a request/ response model
+		Data types for the models:
+			Date for date.
+			Integer for start time so it can be sorted numerically (24hr).
+			Integer for the data id since it creates/ stores integer ids for each entity.
+			The rest are strings since they could contain any kind of characters.
+			(Also included computed property - for the query problem (task 3b)).
+
 
 	The following endpoints were created for sessions:
 		1. createSession - creates a new session using the SessionForm model
@@ -39,3 +46,15 @@
 
 	added a getFeaturedSpeaker endpoint method to return the
 	featured speaker from memcache
+
+# RUNNING THE APPLICATION
+	1. Create a new google developers application at console.developers.google.com
+		a. Copy the application name to the first line in app.yaml
+		b. Create new oauth 2.0 credentials (APIs & auth -> Credentials)
+		c. Copy the client ID to the replace the client ID in the following files of the application:
+			1. settings.py
+			2. static/js/app.js (to enable the front end)
+	2. Navigate to http://[application-name].appspot.com/_ah/api/explorer
+		a. Run getProfile first to add your google account to the data
+		b. Now run the different endpoints from the API explorer or
+		c. Interact with the front-end application at http://[application-name].appspot.com/

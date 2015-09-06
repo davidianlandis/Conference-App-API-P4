@@ -647,6 +647,10 @@ class ConferenceApi(remote.Service):
         if data['date']:
             data['date'] = datetime.strptime(data['date'][:10], "%Y-%m-%d").date()
 
+        # convert start time to integer
+        if data['startTime']:
+            data['startTime'] = int(data['startTime'])
+
         # generate Profile Key based on user ID and Session
         # ID based on Conference key get Session key from ID
         c_key = ndb.Key(Conference, conf_id)
@@ -671,8 +675,8 @@ class ConferenceApi(remote.Service):
         sf = SessionForm()
         for field in sf.all_fields():
             if hasattr(sess, field.name):
-                # convert Date to date string; just copy others
-                if field.name.endswith('date'):
+                # convert time and date to string; just copy others
+                if field.name == 'startTime' or field.name == 'date'
                     setattr(sf, field.name, str(getattr(sess, field.name)))
                 else:
                     setattr(sf, field.name, getattr(sess, field.name))
@@ -881,8 +885,7 @@ class ConferenceApi(remote.Service):
             filter playground-ish.
         """
         q = Session.query()
-        formatted_query = ndb.query.FilterNode("nonWSBefore7", "=", "true")
-        sessions = q.filter(formatted_query)
+        sessions = q.filter(Session.nonWSBefore7 == True)
 
         # return set of SessionForm objects
         return SessionForms(
